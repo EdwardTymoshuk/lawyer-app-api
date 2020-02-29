@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Case = require('../models/Case');
+const verify = require('./verifyToken');
 
-router.get('/', async (req, res) => {
-    try{
+router.get('/', verify, async (req, res) => {
+    res.send(req.user);
+    try {
         const cases = await Case.find();
         res.json(cases)
 
-    }catch(err){
+    } catch(err){ 
         res.json({message: err})
     }
 })

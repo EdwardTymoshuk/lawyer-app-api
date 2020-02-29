@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const {registerValidation} = require('../validation');
+const jwt = require('jsonwebtoken');
+const {registerValidation, loginValidation} = require('../validation');
 
-
+//REGISTRATION
 router.post('/register', async (req, res) => {
     //validation
     const {error} = registerValidation(req.body);
@@ -25,9 +26,33 @@ router.post('/register', async (req, res) => {
     });
     try {
         const savedUser = await user.save();
-        res.send(savedUser);
+        res.send({user: user._id});
     } catch(err) {
         res.status(400).send(err);
     }
 })
+
+//LOGIN
+router.post('/login', async (req, res) => {
+    //validation
+    const {error} = loginValidation(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    //checking if the user is already exists in the db
+    const user = await User.findOne({email: req.body.email});
+    if (!user) return res.status(400).send('Email or password is wrong');
+
+    //checking if the password is correct
+    const validPass = await bcrypt.compare(req.body.password, user.password);
+    if(!validPass) return HTMLTableRowElement.status(400).send('Email or password is wrong');
+
+    //create and assing a token
+    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
+    res.header('auth-tocken', token).send(token);
+
+    res.send('You`re loged in!')
+
+
+})
+
 module.exports = router;
