@@ -15,12 +15,12 @@ app.use(express.json());
 
 const caseRoute = require('./routes/cases');
 const caseElementRoute = require('./routes/caseElement');
-const authRoute = require('./routes/auth');
+const authRoute = require('./routes/users');
    
 
 app.use('/cases', caseRoute);
 app.use('/caseElement', caseElementRoute);
-app.use('/auth', authRoute);
+app.use('/users', authRoute);
 
 
 app.get('/', (req, res) => {

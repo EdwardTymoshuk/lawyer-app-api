@@ -6,14 +6,27 @@ const {registerValidation, loginValidation} = require('../validation');
 const verify = require('./verifyToken');
 
 //GET USER AUTH
-router.get('/me', verify, async (req, res) => {
-    try {
-        const item = await User.findById(req.user._id);
-        res.json({name: item.name, email: item.email})
-        } catch(err) {
-            res.json({message: err});
-        }
-})
+// let currentUser = null;
+// router.get('/me', async (req, res) => {
+//     try {
+//         console.log("Zalupa")
+//                 const item = await User.findOne(req.email);
+//                 console.log(req.currentUser);
+//                 res.sendStatus(200);
+//                 res.json({name: item.name, email: item.email})
+//             } catch(err) {
+//                 res.json({message: err});
+//                 console.log({message: err});
+//             }
+//         })
+// router.delete('/me'), verify, async (req, res) => {
+//     try {
+//         await User.remove({email: req.user.id});
+//         res.sendStatus(200);
+//     } catch(err) {
+//         res.json({message: err});
+//     }
+// }
 //REGISTRATION
 router.post('/register', async (req, res) => {
     //validation
@@ -36,7 +49,7 @@ router.post('/register', async (req, res) => {
     });
     try {
         const savedUser = await user.save();
-        res.send({user: user._id});
+        res.send(savedUser);
     } catch(err) {
         res.status(400).send(err);
     }
@@ -45,23 +58,21 @@ router.post('/register', async (req, res) => {
 //LOGIN
 router.post('/login', async (req, res) => {
     //validation
-    const {error} = loginValidation(req.body);
+    const {error} = loginValidation(req.body.email);
     if (error) return res.status(400).send(error.details[0].message);
 
     //checking if the user is already exists in the db
-    const user = await User.findOne({email: req.body.email});
+    const user = await User.findOne({email: req.body.email.email});
     if (!user) return res.status(400).send('Email or password is wrong');
 
     //checking if the password is correct
-    const validPass = await bcrypt.compare(req.body.password, user.password);
-    if(!validPass) return HTMLTableRowElement.status(400).send('Email or password is wrong');
+    const validPass = await bcrypt.compare(req.body.email.password, user.password);
+    if(!validPass) return res.status(400).send('Email or password is wrong');
 
     //create and assing a token
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-    res.header('auth-tocken', token).send(token);
-    res.send('You`re loged in!')
-
-
+    res.header('auth-token', token).send(user);
+    res.send('You`re loged in!');
 })
 
 module.exports = router;
