@@ -10,14 +10,5 @@ router.get('/:id', async (req, res) => {
         res.json({message: err});
     }
 });
-router.post('/', async (req, res) => {
-    const caseElement = req.body.nrRef;
-    try{
-    const item = await post.save();
-    res.json(item);
-    }catch(err){
-        res.json({message: err})
-    }
-});
 
 module.exports = router;

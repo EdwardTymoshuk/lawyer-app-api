@@ -5,28 +5,6 @@ const jwt = require('jsonwebtoken');
 const {registerValidation, loginValidation} = require('../validation');
 const verify = require('./verifyToken');
 
-//GET USER AUTH
-// let currentUser = null;
-// router.get('/me', async (req, res) => {
-//     try {
-//         console.log("Zalupa")
-//                 const item = await User.findOne(req.email);
-//                 console.log(req.currentUser);
-//                 res.sendStatus(200);
-//                 res.json({name: item.name, email: item.email})
-//             } catch(err) {
-//                 res.json({message: err});
-//                 console.log({message: err});
-//             }
-//         })
-// router.delete('/me'), verify, async (req, res) => {
-//     try {
-//         await User.remove({email: req.user.id});
-//         res.sendStatus(200);
-//     } catch(err) {
-//         res.json({message: err});
-//     }
-// }
 //REGISTRATION
 router.post('/register', async (req, res) => {
     //validation

@@ -7,13 +7,12 @@ router.get('/', verify, async (req, res) => {
     try {
         const cases = await Case.find();
         res.json(cases)
-
     } catch(err){ 
         res.json({message: err})
     }
 })
 router.post('/', async (req, res) => {
-    const post = new Case({
+    const caseElement = new Case({
         nrRef: req.body.nrRef,
         firstName: req.body.firstName,
         secondName: req.body.secondName,
@@ -22,9 +21,10 @@ router.post('/', async (req, res) => {
         description: req.body.description
     });
     try{
-    const item = await post.save();
-    res.json(item);
+    const savedCase = await caseElement.save();
+    res.json(savedCase);
     }catch(err){
+        rs.sendStatus(400);
         res.json({message: err})
     }
 });
@@ -46,9 +46,14 @@ router.delete('/:id', async (req, res) => {
 })
 router.patch('/:id', async (req, res) => {
     try {
-        await Case.updateOne({_id: req.params.id}, 
-            {$set: {title: req.body.title}});
-        res.sendStatus(200);
+        const updatedCase = await Case.updateOne({_id: req.params.id}, 
+            {$set: {firstName: req.body.firstName,
+                    secondName: req.body.secondName,
+                    dob: req.body.dob,
+                    adress: req.body.adress,
+                    description: req.body.description
+                }});
+        res.json(updatedCase);
     } catch(err) {
         res.json({message: err});
     }
