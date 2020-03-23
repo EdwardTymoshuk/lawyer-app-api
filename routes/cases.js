@@ -7,24 +7,26 @@ router.get('/', verify, async (req, res) => {
     try {
         const cases = await Case.find();
         res.json(cases)
-    } catch(err){ 
+    } catch(err) { 
+        res.sendStatus(400);
         res.json({message: err})
     }
 })
 router.post('/', async (req, res) => {
     const caseElement = new Case({
-        nrRef: req.body.nrRef,
+        title: req.body.title,
+        date: req.body.date,
+        adress: req.body.adress,
         firstName: req.body.firstName,
         secondName: req.body.secondName,
         dob: req.body.dob,
-        adress: req.body.adress,
         description: req.body.description
     });
-    try{
+    try {
     const savedCase = await caseElement.save();
     res.json(savedCase);
-    }catch(err){
-        rs.sendStatus(400);
+    } catch(err) {
+        res.sendStatus(400);
         res.json({message: err})
     }
 });
@@ -33,6 +35,7 @@ router.get('/:id', async (req, res) => {
     const item = await Case.findById(req.params.id);
     res.json(item)
     } catch(err) {
+        res.sendStatus(400);
         res.json({message: err});
     }
 });
@@ -41,20 +44,24 @@ router.delete('/:id', async (req, res) => {
         await Case.remove({_id: req.params.id});
         res.sendStatus(200);
     } catch(err) {
+        res.sendStatus(400);
         res.json({message: err});
     }
 })
 router.patch('/:id', async (req, res) => {
     try {
         const updatedCase = await Case.updateOne({_id: req.params.id}, 
-            {$set: {firstName: req.body.firstName,
-                    secondName: req.body.secondName,
-                    dob: req.body.dob,
-                    adress: req.body.adress,
-                    description: req.body.description
+            {$set: {title: req.body.title,
+                date: req.body.date,
+                adress: req.body.adress,
+                firstName: req.body.firstName,
+                secondName: req.body.secondName,
+                dob: req.body.dob,
+                description: req.body.description
                 }});
         res.json(updatedCase);
     } catch(err) {
+        res.sendStatus(400);
         res.json({message: err});
     }
 })

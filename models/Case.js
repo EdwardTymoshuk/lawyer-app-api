@@ -2,7 +2,14 @@ const mongoose = require('mongoose');
  
 
 const CaseSchema = mongoose.Schema({
-    nrRef: {
+    title: {
+        type: String
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    adress: {
         type: String
     },
     firstName: {
@@ -16,15 +23,8 @@ const CaseSchema = mongoose.Schema({
     dob: {
         type: Date
     },
-    adress: {
-        type: String
-    },
     description: {
         type: String
-    },
-    date: {
-        type: Date,
-        default: Date.now
     }
 })
 
