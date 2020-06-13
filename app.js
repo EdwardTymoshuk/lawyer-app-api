@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const history = require('connect-history-api-fallback');
 require('dotenv/config');
 
 dotenv.config();
@@ -11,11 +12,13 @@ dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(history())
 
 
 const caseRoute = require('./routes/cases');
 const caseElementRoute = require('./routes/caseElement');
 const authRoute = require('./routes/users');
+const connect = require('connect');
    
 
 app.use('/cases', caseRoute);

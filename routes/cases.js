@@ -48,7 +48,7 @@ router.delete('/:id', async (req, res) => {
         res.json({message: err});
     }
 })
-router.patch('/:id', async (req, res) => {
+router.post('/:id', async (req, res) => {
     try {
         const updatedCase = await Case.updateOne({_id: req.params.id}, 
             {$set: {title: req.body.title,
