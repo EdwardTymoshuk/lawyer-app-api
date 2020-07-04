@@ -14,17 +14,14 @@ app.use(bodyParser.json());
 app.use(express.json());
 app.use(history())
 
-
 const caseRoute = require('./routes/cases');
 const caseElementRoute = require('./routes/caseElement');
 const authRoute = require('./routes/users');
-const connect = require('connect');
+const PORT = process.env.PORT || 80
    
-
 app.use('/cases', caseRoute);
 app.use('/caseElement', caseElementRoute);
 app.use('/users', authRoute);
-
 
 app.get('/', (req, res) => {
     res.send('DB')
@@ -37,4 +34,6 @@ mongoose.connect(
     return console.log('Connected to DB')
 })
 
-app.listen(3000);
+app.listen(PORT, () => {
+    console.log('Server has been started...')
+});
