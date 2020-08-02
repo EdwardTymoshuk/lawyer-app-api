@@ -20,7 +20,8 @@ router.post('/', async (req, res) => {
         firstName: req.body.firstName,
         secondName: req.body.secondName,
         dob: req.body.dob,
-        description: req.body.description
+        description: req.body.description,
+        _owner: req.body._owner
     });
     try {
     const savedCase = await caseElement.save();

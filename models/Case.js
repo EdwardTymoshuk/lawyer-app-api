@@ -25,6 +25,9 @@ const CaseSchema = mongoose.Schema({
     },
     description: {
         type: String
+    },
+    _owner: {
+        type: String
     }
 })
 
